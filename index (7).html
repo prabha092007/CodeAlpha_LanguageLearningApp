@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>LingoLeap — Learn a language, one card at a time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="phone-frame">
+  <div id="app">
+
+    <!-- ===== ONBOARDING / LANGUAGE PICKER ===== -->
+    <section id="onboarding" class="screen active">
+      <div class="onboarding-content">
+        <p class="eyebrow">Welcome to</p>
+        <h1 class="brand">LingoLeap</h1>
+        <p class="tagline">Pick a language and start collecting stamps in your learning passport.</p>
+        <div class="lang-grid" id="onboarding-lang-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== MAIN APP ===== -->
+    <section id="main-app" class="screen">
+
+      <header class="topbar">
+        <button id="lang-switch-btn" class="lang-pill">
+          <span id="lang-switch-flag">🌐</span>
+          <span id="lang-switch-name">Language</span>
+          <span class="chevron">▾</span>
+        </button>
+        <div class="streak-pill" title="Daily streak">
+          <span class="flame">🔥</span>
+          <span id="streak-count">0</span>
+        </div>
+      </header>
+
+      <main id="view-container">
+
+        <!-- ---- LEARN TAB ---- -->
+        <div id="learn-container" class="tab-panel active">
+
+          <div id="deck-select-view" class="sub-view active">
+            <h2 class="view-title">Choose a deck</h2>
+            <p class="view-sub">Every card you master gets stamped into your passport.</p>
+            <div class="deck-list" id="deck-list"></div>
+          </div>
+
+          <div id="flashcard-view" class="sub-view">
+            <button class="back-btn" data-back="deck-select-view">← Decks</button>
+            <p class="card-progress"><span id="card-index">1</span> / <span id="card-total">10</span></p>
+
+            <div class="flashcard" id="flashcard">
+              <div class="flashcard-inner" id="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                  <p class="card-eyebrow" id="card-front-label">Term</p>
+                  <p class="card-main" id="card-term"></p>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                  <p class="card-eyebrow" id="card-back-label">Means</p>
+                  <p class="card-main" id="card-translation"></p>
+                  <p class="card-pron" id="card-pron"></p>
+                </div>
+              </div>
+            </div>
+            <p class="tap-hint">Tap the card to flip it</p>
+
+            <div class="card-nav">
+              <button id="card-prev" class="icon-btn" aria-label="Previous card">‹</button>
+              <div class="card-mark-actions">
+                <button id="card-still" class="mark-btn still">Still learning</button>
+                <button id="card-know" class="mark-btn know">I know it ✓</button>
+              </div>
+              <button id="card-next" class="icon-btn" aria-label="Next card">›</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ---- QUIZ TAB ---- -->
+        <div id="quiz-container" class="tab-panel">
+
+          <div id="quiz-select-view" class="sub-view active">
+            <h2 class="view-title">Quiz yourself</h2>
+            <p class="view-sub">Ten questions, multiple choice. Let's see what stuck.</p>
+            <div class="deck-list" id="quiz-deck-list"></div>
+          </div>
+
+          <div id="quiz-active-view" class="sub-view">
+            <button class="back-btn" id="quiz-quit-btn">← Quit quiz</button>
+            <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+            <p class="quiz-counter">Question <span id="quiz-index">1</span> of <span id="quiz-total">10</span></p>
+            <h3 class="quiz-question" id="quiz-question"></h3>
+            <div class="quiz-options" id="quiz-options"></div>
+          </div>
+
+          <div id="quiz-result-view" class="sub-view">
+            <div class="result-stamp-spot" id="result-stamp-spot"></div>
+            <h2 class="result-score" id="quiz-score-text"></h2>
+            <p class="result-detail" id="quiz-score-detail"></p>
+            <div class="result-actions">
+              <button id="quiz-retry" class="secondary-btn">Try again</button>
+              <button id="quiz-done" class="primary-btn">Done</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ---- PROGRESS TAB ---- -->
+        <div id="progress-container" class="tab-panel">
+          <h2 class="view-title">Your progress</h2>
+          <p class="view-sub">A passport page for every language you're learning.</p>
+
+          <div class="stat-row">
+            <div class="stat-card">
+              <span class="stat-num" id="stat-streak">0</span>
+              <span class="stat-label">Day streak</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="stat-mastered">0</span>
+              <span class="stat-label">Cards mastered</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="stat-quizzes">0</span>
+              <span class="stat-label">Quizzes taken</span>
+            </div>
+          </div>
+
+          <h3 class="section-label">By language</h3>
+          <div id="progress-by-lang" class="progress-lang-list"></div>
+
+          <button id="reset-progress-btn" class="text-btn">Reset all progress</button>
+        </div>
+
+      </main>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn active" data-tab="learn-container">
+          <span class="nav-icon">📘</span><span>Learn</span>
+        </button>
+        <button class="nav-btn" data-tab="quiz-container">
+          <span class="nav-icon">📝</span><span>Quiz</span>
+        </button>
+        <button class="nav-btn" data-tab="progress-container">
+          <span class="nav-icon">🧳</span><span>Progress</span>
+        </button>
+      </nav>
+
+    </section>
+
+    <!-- ===== LANGUAGE SWITCH MODAL ===== -->
+    <div id="lang-modal" class="modal-backdrop hidden">
+      <div class="modal-sheet">
+        <p class="modal-title">Switch language</p>
+        <div class="lang-grid" id="modal-lang-grid"></div>
+        <button id="modal-close" class="text-btn">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== PASSPORT STAMP OVERLAY (signature element) ===== -->
+  <div id="stamp-overlay" class="stamp-overlay hidden">
+    <div class="stamp" id="stamp">
+      <svg viewBox="0 0 160 160" class="stamp-svg">
+        <circle cx="80" cy="80" r="70" class="stamp-ring" />
+        <circle cx="80" cy="80" r="58" class="stamp-ring-inner" />
+        <text x="80" y="72" text-anchor="middle" class="stamp-text-main" id="stamp-text-main">NICE!</text>
+        <text x="80" y="94" text-anchor="middle" class="stamp-text-sub" id="stamp-text-sub">LINGOLEAP</text>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
